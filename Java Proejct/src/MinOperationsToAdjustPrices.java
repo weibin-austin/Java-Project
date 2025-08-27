@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class App {
+public class MinOperationsToAdjustPrices {
     /**
      * Returns the minimum number of operations required to ensure that
      * the difference between the maximum and minimum prices is strictly less than d.
