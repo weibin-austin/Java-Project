@@ -2,20 +2,44 @@ import java.util.*;
 
 public class MaximizePagesBeforeSuspension {
 
+	/**
+	 * Calculates the maximum number of pages that can be printed before printers get suspended.
+	 * 
+	 * @param pages      the number of pages each printer can print
+	 * @param threshold  the suspension threshold for each printer
+	 * @return           the maximum number of pages that can be printed
+	 */
 	public static int getMaxPages(int[] pages, int[] threshold) {
-		PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(Comparator.<int[]>comparingInt(a -> a[1]).thenComparingInt(a -> a[0] * -1));
+		// Priority queue to select printers by ascending threshold, then by descending pages if tie
+		PriorityQueue<int[]> priorityQueue = new PriorityQueue<>((a, b) -> a[1] == b[1] ? b[0] - a[0] : a[1] - b[1]);
+
+		// Add all printers to the priority queue as [pages, threshold] pairs
 		for (int i = 0; i < pages.length; i++) {
 			priorityQueue.offer(new int[]{pages[i], threshold[i]});
 		}
-		int ans = 0;
+
+		int ans = 0; // Total pages printed
+		// Deque to keep track of currently operational printers
 		Deque<int[]> deque = new LinkedList<>();
+
+		// Process printers until all have been considered
 		while (!priorityQueue.isEmpty()) {
+			// Activate the next printer (lowest threshold, highest pages if tie)
 			int[] poll = priorityQueue.poll();
-			ans += poll[0];
-			deque.offerLast(poll);
-			while (!priorityQueue.isEmpty() && priorityQueue.peek()[1] <= deque.size()) priorityQueue.poll();
-			int curSize = deque.size();
-			while (!deque.isEmpty() && deque.peekFirst()[1] <= curSize) deque.pollFirst();
+			ans += poll[0]; // Add its pages to the total
+			deque.offerLast(poll); // Mark this printer as operational
+
+			// Suspend any printers in the queue whose threshold is less than or equal to the number of operational printers
+			while (!priorityQueue.isEmpty() && priorityQueue.peek()[1] <= deque.size()) {
+				priorityQueue.poll();
+			}
+
+			int curSize = deque.size(); // Current number of operational printers
+
+			// Suspend any operational printers whose threshold is less than or equal to the current number of operational printers
+			while (!deque.isEmpty() && deque.peekFirst()[1] <= curSize) {
+				deque.pollFirst();
+			}
 		}
 		return ans;
 	}
