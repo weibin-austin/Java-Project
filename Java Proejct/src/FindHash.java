@@ -5,6 +5,7 @@ public class FindHash {
     /**
      * Returns the maximum number of distinct elements possible in the hash array.
      * hash[i] = secretKey[i] % param[i]
+     * basically, find the distinct elements in param array
      * 
      * https://www.fastprep.io/problems/amazon-find-hash
      * 
@@ -12,16 +13,21 @@ public class FindHash {
      * @return the maximum number of distinct elements possible in hash
      */
     public int findHash(int[] param) {
-        Arrays.sort(param);
+        Arrays.sort(param); // param1 = {1, 2, 4} -> param1 = {1, 2, 4}
         int distinctCount = 0;
         int targetHash = 0;
-        for (int p : param) {
-            if (p > targetHash) {
+        for (int p : param) { // param2 = {1, 1, 1} 
+             // distinctCount = 0, targetHash = 0 
+            if (p > targetHash) { // p = 1, p = 1, p = 1
+                    // 1 > 0, distinctCount = 1, targetHash = 1
+                    // 1 > 1 false
+                    // 1 > 1 false  
                 distinctCount++;
                 targetHash++;
             }
         }
-        return distinctCount;
+        return distinctCount; // param1 = {1, 2, 4} return 3
+                           // param2 = {1, 1, 1} return 1
     }
 
     // Test cases
@@ -56,6 +62,6 @@ public class FindHash {
         // Test 6: Mix of 1s and others
         int[] param6 = {1, 2, 1, 3, 1, 4};
         System.out.println("Test 6 Output: " + solver.findHash(param6));
-        // Expected: 3
+        // Expected: 4
     }
 }

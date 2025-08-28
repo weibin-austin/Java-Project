@@ -19,7 +19,8 @@ public class FindMaxHealthSum {
 
         // Get all health sums and sort descending
         List<Long> sums = new ArrayList<>(typeHealthSum.values());
-        sums.sort(Collections.reverseOrder());
+        Collections.sort(sums);
+        Collections.reverse(sums);
 
         // Sum the top k type healths
         long result = 0;

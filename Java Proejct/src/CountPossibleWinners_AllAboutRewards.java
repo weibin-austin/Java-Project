@@ -2,8 +2,8 @@ import java.lang.Math;
 
 class CountPossibleWinners_AllAboutRewards {
     /**
-     * Calculates the number of "possible winners".
-     *
+     * Calculates the number of "possible winners". Winner socre which is not smaller than 2nd participant scores.
+     * https://www.fastprep.io/problems/amazon-all-about-rewards
      * @param initialRewards An array of initial reward points.
      * @param n The number of points to be added.
      * @return The number of participants who are considered possible winners.
@@ -13,14 +13,20 @@ class CountPossibleWinners_AllAboutRewards {
             return initialRewards.length;
         }
         
-        long highestPotentialScore = Long.MIN_VALUE;
+        int highestPotentialScore = Integer.MIN_VALUE;
         for (int p : initialRewards) {
-            highestPotentialScore = Math.max(highestPotentialScore, (long) p + n - 1);
+            highestPotentialScore = Math.max(highestPotentialScore, p + n - 1);
         }
+        // initialRewards = [1, 3, 4], n = 3
+        // highestPotentialScore = 4 + 3 - 1 = 6
+        // n-1 is the second highest score a player can reach.
+        // the initial highest score player + second higest score is the threadhold 
 
         int possibleWinnersCount = 0;
         for (int p : initialRewards) {
-            if ((long) p + n >= highestPotentialScore) {
+            // if a player's potential highest score (p + n) is at least the highestPotentialScore,
+            // then this player is a possible winner.
+            if (p + n >= highestPotentialScore) {
                 possibleWinnersCount++;
             }
         }
