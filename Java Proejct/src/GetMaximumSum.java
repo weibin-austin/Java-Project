@@ -14,6 +14,7 @@ public class GetMaximumSum {
      * @return maximum sum or -1 if not possible
      */
     public long getMaximumSum(int[][] data, int[] factor, int x) {
+        if(Arrays.stream(factor).sum() < x) return -1;
         int n = data.length;
         List<Integer> candidates = new ArrayList<>();
         for (int i = 0; i < n; i++) {
@@ -24,7 +25,7 @@ public class GetMaximumSum {
                 candidates.add(row[j]);
             }
         }
-        if (candidates.size() < x) return -1;
+        // if (candidates.size() < x) return -1;
         // Pick the largest x elements from all candidates
         candidates.sort(Collections.reverseOrder());
         long sum = 0;
